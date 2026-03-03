@@ -45,26 +45,27 @@
             <p><em>March 4, 2026</em></p>
             
             <p>
-            This comes more as a way since randomly seeing this paper, it got me curious about how useful this could actually be.<br><br>
+            This comes from me randomly finding a reddit thread based on this 
+            <a href="https://arxiv.org/abs/2512.14982" class="read-more" target="_blank" rel="noopener">paper</a> 
+            done by the members of DeepMind, it got me curious about how useful this could actually be.<br><br>
 
-            Essentially, the team at Google checked it out and came to the conclusion that:
-            "When not using reasoning, repeating the input prompt improves performance for popular models (Gemini, GPT, Claude, and Deepseek) 
-            without increasing the number of generated tokens or latency."<br><br>
+            Essentially, the team at Google and came to the conclusion that:
+            <b>"When not using reasoning, repeating the input prompt improves performance for popular models (Gemini, GPT, Claude, and Deepseek) 
+            without increasing the number of generated tokens or latency."</b><br><br>
 
             It was found that the order of user tokens in the query can affect model performance with regard to outputs generated, 
-            i.e., <em>&lt;CONTEXT&gt;&lt;QUESTION&gt;</em> performs differently from <em>&lt;QUESTION&gt;&lt;CONTEXT&gt;</em>.<br><br>
+            i.e., <b><em>&lt;CONTEXT&gt;&lt;QUESTION&gt;</em></b> performs differently from <b><em>&lt;QUESTION&gt;&lt;CONTEXT&gt;</em></b>.<br><br>
 
             They proposed to repeat the prompt, i.e., input from 
-            <em>&lt;QUESTION&gt;</em> to 
-            <em>&lt;QUESTION&gt;&lt;QUESTION&gt;</em>.
-            This enables each prompt token to attend to every other prompt token. 
+            <b><em>&lt;QUESTION&gt;</em></b> to 
+            <b><em>&lt;QUESTION&gt;&lt;QUESTION&gt;</em></b>.
+            This allows each prompt token to attend to every other prompt token. 
             When not using reasoning, prompt repetition improves the performance of LLMs without increasing the length of the generated outputs 
             or latency.<br><br>
 
             This was tested on 7 popular models of varying sizes: Gemini 2.0 Flash, Gemini 2.0 Flash Lite, GPT-4o-mini, GPT-4o, Claude 3 Haiku, 
-            Claude 3.7 Sonnet, and Deepseek V3. 
-            This was simultaneously tested on a set of 7 benchmarks in several configurations: ARC (Challenge), OpenBookQA, GSM8K, MMLU-Pro, 
-            MATH, and 2 custom benchmarks called NameIndex and MiddleMatch.<br><br>
+            Claude 3.7 Sonnet, and Deepseek V3 and was simultaneously tested on a set of 7 benchmarks in several configurations: ARC (Challenge), 
+            OpenBookQA, GSM8K, MMLU-Pro, MATH and 2 custom benchmarks called NameIndex and MiddleMatch.<br><br>
 
             <b>NameIndex</b> is essentially giving the model a list of N names and asking it to output the ith name on the list. 
             We use N = 50, i = 25.<br>
@@ -95,7 +96,7 @@
             What is the single name that appears right between Carlos Davis and Bruce Phillips?
             </span><br>
 
-            They compare prompt repetition to 2 additional variants, namely Prompt Repetition (Verbose) and Prompt Repetition ×3. 
+            They compare prompt repetition to 2 additional variants namely Prompt Repetition (Verbose) and Prompt Repetition ×3. 
             We observe that they perform similarly for most tasks and models, and sometimes outperform vanilla prompt repetition. 
             Notably, Prompt Repetition ×3 often substantially outperforms vanilla prompt repetition.<br><br>
 
@@ -105,8 +106,11 @@
 
             The final conclusion they came to is that <b>prompt repetition does not change the length or format of generated outputs, 
             and it might be a good default for many models and tasks when reasoning is not used.</b><br><br>
-            </p>
 
+            Usecases of this can vary but the one that immediately comes to mind is a semi-distillation method where we could only use 
+            prompt repetition at inference, get the improved answers and feed this to the finetuned model by single prompt + improved answer sets.
+            In an ideal world, this would increase baseline accuracies of finetuned models but more research has to be done regarding this.
+            </p>
         </article>
     </main>
 
