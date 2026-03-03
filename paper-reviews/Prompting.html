@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Reviews</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-title">Steven Itti Leon</a>   
+        <nav class="main-nav">
+            <a href="../about/index.html">About</a>
+            <a href="../learning/index.html">Learning</a>
+            <a href="../paper-reviews/index.html">Paper Reviews</a>
+        </nav>
+        <div class="header-social">
+            <a href="mailto:stevenittileon@gmail.com" aria-label="Email">✉</a>
+            <a href="https://github.com/stevenittileon" aria-label="GitHub" class="github-icon-link">
+                <svg stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="none" viewBox="0 0 24 24" class="github-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+            <a href="https://linkedin.com/in/steven-itti-leon/" aria-label="LinkedIn">in</a>
+        </div>
+    </header>
+
+    <style>
+    .example {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 0.95rem;
+        color: var(--text-muted);   /* #5c6450 — softer olive */
+        display: block;
+        margin: 1rem 0;
+        line-height: 1.35;
+    }
+    </style>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Learning</a>
+        <article class="page-content">
+            <h1>Prompting Twice might be the way</h1>
+            <p><em>March 4, 2026</em></p>
+            
+            <p>
+            This comes more as a way since randomly seeing this paper, it got me curious about how useful this could actually be.<br><br>
+
+            Essentially, the team at Google checked it out and came to the conclusion that:
+            "When not using reasoning, repeating the input prompt improves performance for popular models (Gemini, GPT, Claude, and Deepseek) 
+            without increasing the number of generated tokens or latency."<br><br>
+
+            It was found that the order of user tokens in the query can affect model performance with regard to outputs generated, 
+            i.e., <em>&lt;CONTEXT&gt;&lt;QUESTION&gt;</em> performs differently from <em>&lt;QUESTION&gt;&lt;CONTEXT&gt;</em>.<br><br>
+
+            They proposed to repeat the prompt, i.e., input from 
+            <em>&lt;QUESTION&gt;</em> to 
+            <em>&lt;QUESTION&gt;&lt;QUESTION&gt;</em>.
+            This enables each prompt token to attend to every other prompt token. 
+            When not using reasoning, prompt repetition improves the performance of LLMs without increasing the length of the generated outputs 
+            or latency.<br><br>
+
+            This was tested on 7 popular models of varying sizes: Gemini 2.0 Flash, Gemini 2.0 Flash Lite, GPT-4o-mini, GPT-4o, Claude 3 Haiku, 
+            Claude 3.7 Sonnet, and Deepseek V3. 
+            This was simultaneously tested on a set of 7 benchmarks in several configurations: ARC (Challenge), OpenBookQA, GSM8K, MMLU-Pro, 
+            MATH, and 2 custom benchmarks called NameIndex and MiddleMatch.<br><br>
+
+            <b>NameIndex</b> is essentially giving the model a list of N names and asking it to output the ith name on the list. 
+            We use N = 50, i = 25.<br>
+
+            <span class="example">
+            Example: <br>
+            Here’s a list of names: Dale Lopez, Peter Sanchez, Allen Harris, Scott Davis, Hudson Leviathan, Daphne Kalman, Dennis Davis, 
+            Henry King, Alfred Cooper, Bruce Usher, Travis Ramirez, Rafael Jennings, Richard Rogers, Walter Young, Caleb Harris, Ben Kalman, 
+            Donald Carter, Richard Sterling, Mark Nightingale, Steven Carter, Talia Kalman, Dennis Hanson, James Harris, Craig Chavez, 
+            Paul Sanchez, Samuel Curtis, Jacob James, Allen Thomas, Dale Evans, James Fox, Douglas Allen, Orion Johnson, Alexander Wright, 
+            Eugene Morrison, Nelson Lee, Alan Young, Caleb Ward, Alberto Robinson, Robert McCarthy, Mark Price, Kenneth Ramirez, Jeffrey White, 
+            Chad Cooper, Arthur Waters, Bruce Callahan, Liam Leviathan, Steven Robinson, Alberto Murphy, Leonard Johnson, Robert Murphy.<br><br>
+
+            What’s the 25th name?
+            </span><br>
+
+            <strong>MiddleMatch</strong> is when the model gets a list of N names or numbers (out of a total possible set of K, i.e., K &lt; N means there will be repeating elements), and is asked to output the name/number located directly between two given ones. 
+            We use N = 40, K = 10.<br>
+
+            <span class="example">
+            Example:<br>
+            Here’s a list (potentially with repetitions) of names: Carlos Davis, Dale Sims, Carlos Davis, Dale Sims, Stephen Cruz, Dale Sims, 
+            Finnian Ross, Stephen Cruz, Stephen Cruz, Gregory Collins, Dale Sims, Stephen Cruz, Carlos Davis, Stephen Cruz, Dale Sims, Dale Sims, 
+            Stephen Cruz, Stephen Cruz, Leonard Kalman, Bruce Phillips, Raymond Roberts, Dale White, Leonard Kalman, Finnian Ross, James Wright, 
+            Finnian Ross, Raymond Roberts, Dale Sims, Dale Sims, Leonard Kalman, Dale Sims, Carlos Davis, Leonard Kalman, Bruce Phillips, 
+            Dale Sims, Raymond Roberts, Gregory Collins, Gregory Collins, Dale Sims, Finnian Ross.<br><br>
+
+            What is the single name that appears right between Carlos Davis and Bruce Phillips?
+            </span><br>
+
+            They compare prompt repetition to 2 additional variants, namely Prompt Repetition (Verbose) and Prompt Repetition ×3. 
+            We observe that they perform similarly for most tasks and models, and sometimes outperform vanilla prompt repetition. 
+            Notably, Prompt Repetition ×3 often substantially outperforms vanilla prompt repetition.<br><br>
+
+            To demonstrate that the gains are indeed due to repeating the prompt and not simply increasing the length of the input, 
+            they also evaluate the Padding method, which pads the inputs with periods (".") to the same length as prompt repetition and, 
+            as expected, does not improve performance.<br><br>
+
+            The final conclusion they came to is that <b>prompt repetition does not change the length or format of generated outputs, 
+            and it might be a good default for many models and tasks when reasoning is not used.</b><br><br>
+            </p>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-col footer-brand">
+                <span class="footer-label">Steven Itti Leon</span>
+                <span class="footer-sub">Learning · ML · Notes</span>
+            </div>
+
+            <div class="footer-col footer-contact">
+                <span class="footer-label">Contact</span>
+                <p class="footer-text">
+                <a href="mailto:stevenittileon@gmail.com">stevenittileon@gmail.com</a><br>
+                Based in India
+                </p>
+            </div>
+
+            <div class="footer-col footer-links">
+                <span class="footer-label">Elsewhere</span>
+                <ul class="footer-link-list">
+                <li><a href="https://github.com/stevenittileon" target="_blank">↗ GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/steven-itti-leon/" target="_blank">↗ LinkedIn</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-links">
+            <h2 class="footer-big-heading">Let’s learn.</h2>
+            <div class="footer-meta">
+                <span>© 2025 Steven Itti Leon</span>
+            </div>
+            </div>
+        </div>
+
+        <!-- <div class="footer-bottom">
+            <h2 class="footer-big-heading">Let’s learn.</h2>
+            <div class="footer-meta">
+                <span>© 2025 Steven Itti Leon</span>
+                <span>Built for GitHub Pages</span>
+            </div>
+        </div> -->
+    </div>
+    </footer>
+</body>
+</html>
